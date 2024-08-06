@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	. "github.com/git-town/git-town/v15/internal/gohacks/prelude"
+	"github.com/git-town/git-town/v15/internal/messages"
 )
 
 // BranchInfos contains the BranchInfos for all branches in a repo.
@@ -135,6 +136,7 @@ func (self BranchInfos) Select(names ...LocalBranchName) (BranchInfos, error) {
 			result[n] = *branch
 			continue
 		}
+		return result, fmt.Errorf(messages.BranchDoesntExist, name)
 	}
 	return result, nil
 }
