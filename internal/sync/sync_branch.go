@@ -23,6 +23,8 @@ func BranchProgram(branch gitdomain.BranchInfo, args BranchProgramArgs) {
 		syncDeletedBranchProgram(args.Program, localName, parentOtherWorktree, args)
 	case branch.SyncStatus == gitdomain.SyncStatusOtherWorktree:
 		// Git Town doesn't sync branches that are active in another worktree
+	case branch.SyncStatus == gitdomain.SyncStatusRemoteOnly:
+		// remote-only branches don't need to be synced
 	default:
 		ExistingBranchProgram(args.Program, branch, parentOtherWorktree, args)
 	}

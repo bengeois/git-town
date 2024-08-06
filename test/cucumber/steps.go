@@ -549,6 +549,13 @@ func defineSteps(sc *godog.ScenarioContext) {
 		return context.WithValue(ctx, keyScenarioState, &state), nil
 	})
 
+	sc.Step(`I delete the local branch "([^"]+)"`, func(ctx context.Context, branchName string) error {
+		state := ctx.Value(keyScenarioState).(*ScenarioState)
+		devRepo := state.fixture.DevRepo.GetOrPanic()
+		branch := gitdomain.NewLocalBranchName(branchName)
+		return devRepo.DeleteLocalBranch(devRepo.TestCommands, branch)
+	})
+
 	sc.Step(`in a separate terminal I create branch "([^"]+)" with commits`, func(ctx context.Context, branchName string, table *godog.Table) {
 		state := ctx.Value(keyScenarioState).(*ScenarioState)
 		devRepo := state.fixture.DevRepo.GetOrPanic()

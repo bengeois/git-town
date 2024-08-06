@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	. "github.com/git-town/git-town/v15/internal/gohacks/prelude"
-	"github.com/git-town/git-town/v15/internal/messages"
 )
 
 // BranchInfos contains the BranchInfos for all branches in a repo.
@@ -124,14 +123,17 @@ func (self BranchInfos) Remove(branchName LocalBranchName) BranchInfos {
 	return result
 }
 
-// Select provides the BranchSyncStatus elements with the given names.
+// Select provides the BranchInfos with the given names.
 func (self BranchInfos) Select(names ...LocalBranchName) (BranchInfos, error) {
 	result := make(BranchInfos, len(names))
-	for b, bi := range names {
-		if branch, hasBranch := self.FindByLocalName(bi).Get(); hasBranch {
-			result[b] = *branch
-		} else {
-			return result, fmt.Errorf(messages.BranchDoesntExist, bi)
+	for n, name := range names {
+		if branch, hasBranch := self.FindByLocalName(name).Get(); hasBranch {
+			result[n] = *branch
+			continue
+		}
+		if branch, hasBranch := self.FindByRemoteName(name.TrackingBranch()).Get(); hasBranch {
+			result[n] = *branch
+			continue
 		}
 	}
 	return result, nil
