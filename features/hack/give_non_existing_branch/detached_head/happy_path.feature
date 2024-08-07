@@ -2,9 +2,13 @@ Feature: creating a new branch from a detached head
 
   Background:
     Given a Git repo with origin
+    And the branch
+      | NAME     | TYPE    | PARENT | LOCATIONS     |
+      | existing | feature | main   | local, origin |
     And the commits
-      | BRANCH | LOCATION | MESSAGE     |
-      | main   | local    | main commit |
+      | BRANCH   | LOCATION      | MESSAGE         |
+      | main     | local, origin | main commit     |
+      | existing | local, origin | existing commit |
     And the current branch is "existing"
     And I delete the local branch "main"
     When I run "git-town hack new"
@@ -12,9 +16,9 @@ Feature: creating a new branch from a detached head
   @debug @this
   Scenario: result
     Then it runs the commands
-      | BRANCH   | COMMAND                  |
-      | existing | git fetch --prune --tags |
-      |          | git checkout -b new main |
+      | BRANCH   | COMMAND                         |
+      | existing | git fetch --prune --tags        |
+      |          | git checkout -b new origin/main |
     And the current branch is now "new"
     And these commits exist now
       | BRANCH   | LOCATION      | MESSAGE         |

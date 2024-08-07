@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"slices"
 
@@ -208,6 +209,7 @@ func appendProgram(data appendFeatureData) program.Program {
 			})
 		}
 	}
+	fmt.Println("111111111111111111111111111111111111111111111", data.newBranchParentCandidates)
 	prog.Value.Add(&opcodes.CreateAndCheckoutBranchExistingParent{
 		Ancestors: data.newBranchParentCandidates,
 		Branch:    data.targetBranch,
