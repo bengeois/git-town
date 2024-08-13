@@ -36,7 +36,7 @@ type BranchProgramArgs struct {
 	Config        configdomain.ValidatedConfig
 	InitialBranch gitdomain.LocalBranchName
 	Program       Mutable[program.Program]
-	PushBranch    configdomain.PushBranches
+	PushBranches  configdomain.PushBranches
 	Remotes       gitdomain.Remotes
 }
 
@@ -60,7 +60,7 @@ func ExistingBranchProgram(list Mutable[program.Program], branch gitdomain.Branc
 			offline:             args.Config.Offline,
 			parentOtherWorktree: parentOtherWorktree,
 			program:             list,
-			pushBranches:        args.PushBranch,
+			pushBranches:        args.PushBranches,
 			remoteName:          branch.RemoteName,
 			syncStrategy:        args.Config.SyncFeatureStrategy.SyncStrategy(),
 		})
@@ -72,7 +72,7 @@ func ExistingBranchProgram(list Mutable[program.Program], branch gitdomain.Branc
 			offline:             args.Config.Offline,
 			parentOtherWorktree: parentOtherWorktree,
 			program:             list,
-			pushBranches:        args.PushBranch,
+			pushBranches:        args.PushBranches,
 			remoteName:          branch.RemoteName,
 			syncStrategy:        args.Config.SyncFeatureStrategy.SyncStrategy(),
 		})
@@ -91,7 +91,7 @@ func ExistingBranchProgram(list Mutable[program.Program], branch gitdomain.Branc
 			syncStrategy:        args.Config.SyncPrototypeStrategy.SyncStrategy(),
 		})
 	}
-	if args.PushBranch.IsTrue() && args.Remotes.HasOrigin() && args.Config.IsOnline() && branchType.ShouldPush(localName == args.InitialBranch) {
+	if args.PushBranches.IsTrue() && args.Remotes.HasOrigin() && args.Config.IsOnline() && branchType.ShouldPush(localName == args.InitialBranch) {
 		switch {
 		case !branch.HasTrackingBranch():
 			list.Value.Add(&opcodes.CreateTrackingBranch{Branch: localName})

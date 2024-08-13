@@ -205,7 +205,7 @@ func appendProgram(data appendFeatureData) program.Program {
 				InitialBranch: data.initialBranch,
 				Program:       prog,
 				Remotes:       data.remotes,
-				PushBranch:    true,
+				PushBranches:  true,
 			})
 		}
 	}
